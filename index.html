@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#6d4aff">
+  <meta name="description" content="A simple voice-first bookkeeping assistant for your shop.">
+  <title>HisabSaathi — Your business, in your voice</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="HisabSaathi home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" role="img"><path d="M7 5.5h18v21H7zM11 11h10M11 16h10M11 21h6" /></svg>
+      </span>
+      <span><strong>HisabSaathi</strong><small>Your voice. Your business.</small></span>
+    </a>
+    <label class="language-picker" for="language">
+      <span class="sr-only">Choose language</span>
+      <span aria-hidden="true">文</span>
+      <select id="language">
+        <option value="en-IN">English</option>
+        <option value="te-IN">తెలుగు</option>
+        <option value="hi-IN">हिन्दी</option>
+      </select>
+    </label>
+  </header>
+
+  <main class="page-shell">
+    <section class="welcome-row">
+      <div>
+        <p class="eyebrow" id="today-label">YOUR SHOP AT A GLANCE</p>
+        <h1 id="welcome-title">Good day, shopkeeper <span aria-hidden="true">👋</span></h1>
+        <p class="subheading" id="welcome-subtitle">A clearer picture of your business, one entry at a time.</p>
+      </div>
+      <button class="text-button" id="reset-demo" type="button">Reset demo data</button>
+    </section>
+
+    <section class="metrics" aria-label="Business summary">
+      <article class="metric-card sales-card">
+        <div class="metric-top"><span class="metric-icon" aria-hidden="true">↗</span><span class="metric-label" id="sales-label">Today's sales</span></div>
+        <p class="metric-value" id="sales-total">₹0</p>
+        <p class="metric-note" id="sales-note">Money earned today</p>
+      </article>
+      <article class="metric-card expenses-card">
+        <div class="metric-top"><span class="metric-icon" aria-hidden="true">↘</span><span class="metric-label" id="expenses-label">Today's expenses</span></div>
+        <p class="metric-value" id="expenses-total">₹0</p>
+        <p class="metric-note" id="expenses-note">Money spent today</p>
+      </article>
+      <article class="metric-card credit-card">
+        <div class="metric-top"><span class="metric-icon" aria-hidden="true">◷</span><span class="metric-label" id="credit-label">Customer credit</span></div>
+        <p class="metric-value" id="credit-total">₹0</p>
+        <p class="metric-note" id="credit-note">Still to be collected</p>
+      </article>
+    </section>
+
+    <section class="work-area">
+      <article class="voice-card">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow" id="voice-eyebrow">YOUR VOICE ASSISTANT</p>
+            <h2 id="voice-title">What happened in your shop?</h2>
+          </div>
+          <span class="privacy-chip"><span aria-hidden="true">●</span> <span id="privacy-label">Saved on this device</span></span>
+        </div>
+
+        <p class="voice-hint" id="voice-hint">Tap the microphone and speak naturally. I’ll check the details with you before saving.</p>
+
+        <button class="mic-button" id="mic-button" type="button" aria-label="Start listening">
+          <span class="mic-halo"></span>
+          <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="11" y="4" width="10" height="17" rx="5"></rect><path d="M7 16a9 9 0 0 0 18 0M16 25v4m-5 0h10"></path></svg>
+          <span class="mic-label" id="mic-label">Tap to speak</span>
+        </button>
+        <p class="listening-status" id="listening-status" aria-live="polite"></p>
+
+        <div class="divider"><span id="manual-divider">OR TYPE WHAT HAPPENED</span></div>
+        <form class="entry-form" id="entry-form">
+          <label class="sr-only" for="command-input" id="command-label">Describe a sale, expense, or customer credit</label>
+          <input id="command-input" name="command" type="text" autocomplete="off" placeholder="e.g. I sold groceries worth 500 rupees">
+          <button class="send-button" id="send-button" type="submit" aria-label="Submit entry">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 14-7-5 14-3-6-6-1zM11 13l8-8"></path></svg>
+          </button>
+        </form>
+
+        <div class="transcript-box" id="transcript-box" hidden>
+          <p class="transcript-label" id="transcript-label">I heard</p>
+          <p id="transcript-text"></p>
+        </div>
+
+        <div class="confirmation-box" id="confirmation-box" hidden>
+          <div class="confirmation-copy">
+            <span class="confirmation-icon" aria-hidden="true">✓</span>
+            <div><p class="confirmation-title" id="confirmation-title">Please confirm this entry</p><p id="confirmation-details"></p></div>
+          </div>
+          <div class="confirmation-actions">
+            <button class="button button-secondary" id="cancel-button" type="button">Cancel</button>
+            <button class="button button-primary" id="confirm-button" type="button">Yes, save it</button>
+          </div>
+        </div>
+      </article>
+
+      <aside class="examples-card">
+        <div class="section-heading">
+          <div><p class="eyebrow" id="try-eyebrow">A FEW EXAMPLES</p><h2 id="try-title">Try saying</h2></div>
+          <span class="sparkle" aria-hidden="true">✦</span>
+        </div>
+        <button class="example-item" type="button" data-example="I sold groceries worth 500 rupees">
+          <span class="example-icon sale-icon" aria-hidden="true">↗</span><span><strong id="example-sale-title">Record a sale</strong><small id="example-sale-copy">“I sold groceries worth 500 rupees”</small></span><span class="example-arrow" aria-hidden="true">→</span>
+        </button>
+        <button class="example-item" type="button" data-example="I spent 200 rupees today">
+          <span class="example-icon expense-icon" aria-hidden="true">↘</span><span><strong id="example-expense-title">Add an expense</strong><small id="example-expense-copy">“I spent 200 rupees today”</small></span><span class="example-arrow" aria-hidden="true">→</span>
+        </button>
+        <button class="example-item" type="button" data-example="Ravi purchased groceries worth 300 rupees on credit">
+          <span class="example-icon credit-icon" aria-hidden="true">◷</span><span><strong id="example-credit-title">Track customer credit</strong><small id="example-credit-copy">“Ravi purchased 300 rupees on credit”</small></span><span class="example-arrow" aria-hidden="true">→</span>
+        </button>
+        <div class="tip-box"><span aria-hidden="true">✦</span><p id="tip-copy">You’re always in control. Nothing is saved until you confirm it.</p></div>
+      </aside>
+    </section>
+
+    <section class="records-grid">
+      <article class="records-card">
+        <div class="section-heading records-heading">
+          <div><p class="eyebrow" id="history-eyebrow">YOUR LATEST ENTRIES</p><h2 id="history-title">Transaction history</h2></div>
+          <span class="record-count" id="record-count">0 entries</span>
+        </div>
+        <div class="transaction-list" id="transaction-list" aria-live="polite"></div>
+        <div class="empty-state" id="history-empty" hidden><span aria-hidden="true">🧾</span><p id="history-empty-copy">Your entries will show up here.</p></div>
+      </article>
+
+      <article class="records-card customers-card">
+        <div class="section-heading records-heading">
+          <div><p class="eyebrow" id="customers-eyebrow">MONEY TO COLLECT</p><h2 id="customers-title">Customer credit</h2></div>
+          <span class="customer-count" id="customer-count">0</span>
+        </div>
+        <div class="customer-list" id="customer-list" aria-live="polite"></div>
+        <div class="empty-state compact-empty" id="customers-empty" hidden><span aria-hidden="true">🤝</span><p id="customers-empty-copy">Customer balances will appear here.</p></div>
+      </article>
+    </section>
+
+    <footer><span class="footer-mark" aria-hidden="true">✦</span><span id="footer-copy">Simple hisaab. More time for your business.</span><span class="footer-local">HisabSaathi <span aria-hidden="true">·</span> 1.0</span></footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
